@@ -8,7 +8,7 @@ demonstrates this is the fact that we model a `CROSS JOIN` in the same way that 
 condition of `TRUE`. Semantically, these have the exact same function and so they also have the same representation in
 the AST.
 
-## It *is* Actually a Tree
+> It **is** Actually a Tree
 
 Language implementations often use the term "Abstract Syntax Tree" to refer to a data structure that is actually a
 graph. Our implementation for PartiQL's AST is a tree and *not* a graph. It contains no cycles and each node can only
