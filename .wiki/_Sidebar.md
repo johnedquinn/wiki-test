@@ -1,12 +1,10 @@
 * General
   * [Home](https://github.com/johnedquinn/wiki-test/wiki/Home)
-  * [Contributing](https://github.com/johnedquinn/wiki-test/Contributing)
   * [Code Style](https://github.com/johnedquinn/wiki-test/wiki/CODE-STYLE)
 * Tutorials
-  * [Getting Started](https://github.com/johnedquinn/wiki-test/wiki/Getting-Started)
+  * [General Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Tutorial)
   * [Command Line Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Command-Line-Tutorial)
   * [Cookbook](https://github.com/johnedquinn/wiki-test/wiki/Cookbook)
-  * [General Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Tutorial)
 * Design & Development Documents
   * [Abstract Syntax Tree](https://github.com/johnedquinn/wiki-test/wiki/Abstract-Syntax-Tree)
   * [Architecture Design](https://github.com/johnedquinn/wiki-test/wiki/Architecture-Design)

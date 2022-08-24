@@ -1,22 +1,23 @@
-# PartiQL's Documentation
+# Overview
 
-The user's guide provides an explanation of the features implemented by PartiQL's kotlin implementation. 
-
- *This document is an early draft, contributions welcome!*
-
-## What is PartiQL 
-
- PartiQL is an implementation of
- [SQL++](http://db.ucsd.edu/wp-content/uploads/pdfs/375.pdf) based upon
- [Ion's](http://amzn.github.io/ion-docs/) type system. PartiQL is based on SQL92
- and provides support for working with schemaless hierarchical data. 
+PartiQL is an implementation of [SQL++](http://db.ucsd.edu/wp-content/uploads/pdfs/375.pdf) based upon
+[Ion's](http://amzn.github.io/ion-docs/) type system. PartiQL is based on SQL92 and provides support for working 
+with schemaless hierarchical data. 
 
 ## Further Reading 
 
  * [SQL++](http://db.ucsd.edu/wp-content/uploads/pdfs/375.pdf)
  * [Ion's](http://amzn.github.io/ion-docs/) 
-  
-## Bug Reports 
+
+
+# Contributing
+
+## Contributing to the Project
+
+Please see our [CONTRIBUTING.md](https://github.com/partiql/partiql-lang-kotlin/blob/main/CONTRIBUTING.md) for information
+on how to contribute.
+
+## Bug Reports
 
 We welcome you to use the GitHub issue tracker to report bugs or suggest
 features.
@@ -31,9 +32,17 @@ like these are incredibly useful:
 * Any modifications you've made relevant to the bug
 * Anything unusual about your environment or deployment
 
+## Contributing to this Wiki
 
-## Contribute 
+This wiki is stored within the main project's repository under the `.wiki/` directory. From there, all contents of the directory are synced (via a GitHub workflow) with this wiki.
 
-See our [contribute guide](https://github.com/partiql/partiql-lang-kotlin/blob/345a97c3c79c4a2beb8d44185221ee419b82e08a/CONTRIBUTING.md). 
+To contribute to this wiki, there are some rules to follow:
 
+- Add all changes to `partiql-lang-kotlin` in the `.wiki` directory
+- All hyperlinks in Markdown files should be HTTP links
+- If adding/removing/renaming a page, update the `_Sidebar.md` file accordingly
 
+# License
+
+This project is licensed under the Apache-2.0 License. Please see our 
+[LICENSE](https://github.com/partiql/partiql-lang-kotlin/blob/main/LICENSE) here.
