@@ -1,0 +1,17 @@
+<<
+  {
+    'projectName': 'AWS Aurora security',
+    'employees': <<
+      'Bob Smith'
+    >>
+  },
+  {
+    'projectName': 'AWS Redshift security',
+    'employees': <<
+      'Bob Smith',
+      'Jane Smith'
+    >>
+  }
+>>
+--- 
+OK!
