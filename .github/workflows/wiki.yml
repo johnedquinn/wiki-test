@@ -17,5 +17,5 @@ jobs:
       env:
         WIKI_DIR: .wiki/
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_MAIL: 'example-user@example.com'
-        GH_NAME: 'partiql-lang-kotlin-wiki-pusher'
+        GH_MAIL: 'github-actions[bot]@users.noreply.github.com'
+        GH_NAME: 'github-actions[bot]'
