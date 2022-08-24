@@ -17,5 +17,5 @@ jobs:
       env:
         WIKI_DIR: .wiki/
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_MAIL: ${{ secrets.OWNER_EMAIL }}
-        GH_NAME: ${{ github.repository_owner }}
+        GH_MAIL: 'example-user@example.com'
+        GH_NAME: 'example-owner'
