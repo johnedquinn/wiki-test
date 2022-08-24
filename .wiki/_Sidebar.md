@@ -1,5 +1,5 @@
-* [Home](Home.md)
-* Contributing
+* General
+  * [Home](Home.md)
   * [Contributing to the Project](TODO)
   * [Contributing to this Wiki](TODO)
   * [Code Style](https://github.com/johnedquinn/wiki-test/wiki/CODE-STYLE)
@@ -20,5 +20,11 @@
   * [Implementation & Specification Comparison](https://github.com/johnedquinn/wiki-test/wiki/Implementation-&-Specification-Comparison)
   * [Test Script Specification](https://github.com/johnedquinn/wiki-test/wiki/Test-Script-Specification)
 * Migration Guides
-  * TODO
-  * TODO
+  * [CLI Versions](https://github.com/johnedquinn/wiki-test/wiki/cli-versions.md)
+  * [Migration Guide General](https://github.com/johnedquinn/wiki-test/wiki/migration-guide.md)
+  * [v0.1 -> v0.2](https://github.com/johnedquinn/wiki-test/wiki/v0.1-to-v0.2-migration.md)
+  * [v0.2 -> v0.3](https://github.com/johnedquinn/wiki-test/wiki/v0.2-to-v0.3-migration.md)
+  * [v0.3 -> v0.4](https://github.com/johnedquinn/wiki-test/wiki/v0.3-to-v0.4-migration.md)
+  * [v0.4 -> v0.5](https://github.com/johnedquinn/wiki-test/wiki/v0.4-to-v0.5-migration.md)
+  * [v0.5 -> v0.6](https://github.com/johnedquinn/wiki-test/wiki/v0.5-to-v0.6-migration.md)
+  * [v0.6 -> v0.7](https://github.com/johnedquinn/wiki-test/wiki/v0.6-to-v0.7-migration.md)
