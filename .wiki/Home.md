@@ -1,10 +1,6 @@
 # PartiQL's Documentation
 
-And here's a possible merge conflict.
-
 The user's guide provides an explanation of the features implemented by PartiQL's kotlin implementation. 
-
-And another maybe merge conflict.
 
  *This document is an early draft, contributions welcome!*
 
