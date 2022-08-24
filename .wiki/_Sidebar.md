@@ -1,14 +1,11 @@
 * General
-  * [Home](Home.md)
-  * [Contributing to the Project](TODO)
-  * [Contributing to this Wiki](TODO)
+  * [Home](https://github.com/johnedquinn/wiki-test/wiki/Home)
+  * [Contributing](https://github.com/johnedquinn/wiki-test/Contributing)
   * [Code Style](https://github.com/johnedquinn/wiki-test/wiki/CODE-STYLE)
 * Tutorials
   * [Getting Started](https://github.com/johnedquinn/wiki-test/wiki/Getting-Started)
-  * [Guide](https://github.com/johnedquinn/wiki-test/wiki/Guide)
   * [Command Line Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Command-Line-Tutorial)
   * [Cookbook](https://github.com/johnedquinn/wiki-test/wiki/Cookbook)
-  * [PartiQL Tutorial](https://github.com/johnedquinn/wiki-test/wiki/PartiQL-Tutorial)
   * [General Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Tutorial)
 * Design & Development Documents
   * [Abstract Syntax Tree](https://github.com/johnedquinn/wiki-test/wiki/Abstract-Syntax-Tree)
@@ -20,8 +17,8 @@
   * [Implementation & Specification Comparison](https://github.com/johnedquinn/wiki-test/wiki/Implementation-&-Specification-Comparison)
   * [Test Script Specification](https://github.com/johnedquinn/wiki-test/wiki/Test-Script-Specification)
 * Migration Guides
-  * [CLI Versions](https://github.com/johnedquinn/wiki-test/wiki/cli-versions.md)
   * [Migration Guide General](https://github.com/johnedquinn/wiki-test/wiki/migration-guide.md)
+  * [CLI Versions](https://github.com/johnedquinn/wiki-test/wiki/cli-versions.md)
   * [v0.1 -> v0.2](https://github.com/johnedquinn/wiki-test/wiki/v0.1-to-v0.2-migration.md)
   * [v0.2 -> v0.3](https://github.com/johnedquinn/wiki-test/wiki/v0.2-to-v0.3-migration.md)
   * [v0.3 -> v0.4](https://github.com/johnedquinn/wiki-test/wiki/v0.3-to-v0.4-migration.md)
