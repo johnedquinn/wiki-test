@@ -1,16 +1,177 @@
+# Getting Started
 
-!include user/GettingStarted.md
+PartiQL provides an interactive shell, or Read Evaluate Print Loop (REPL),
+that allows users to write and evaluate PartiQL queries.
+
+## Prerequisites
+
+PartiQL requires the Java Runtime (JVM) to be installed on your machine.
+You can obtain the *latest* version of the Java Runtime from either
+
+1. [OpenJDK](https://openjdk.java.net/install/), or [OpenJDK for Windows](https://developers.redhat.com/products/openjdk)
+1. [Oracle](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
+
+[Follow the instructions on how to set](https://docs.oracle.com/cd/E19182-01/820-7851/inst_cli_jdk_javahome_t/)
+`JAVA_HOME` to the path where your Java Runtime is installed.
+
+## Download the PartiQL REPL
+
+Each release of PartiQL comes with an archive that contains the PartiQL REPL as a
+zip file.
+
+1. [Download](https://github.com/partiql/partiql-lang-kotlin/releases).
+   You may have to click on `Assets` to see the zip and tgz archives.
+   the latest `partiql-cli` zip archive to your machine.
+1. Expand (unzip) the archive on your machine. Expanding the archive yields the following folder structure:
+
+The file will append PartiQL's release version to the archive, i.e., `partiql-cli-0.1.0.zip`.
+
+```
+├── partiql-cli
+    ├── bin
+    │   ├── partiql
+    │   └── partiql.bat
+    ├── lib
+    │   └── ... 
+    ├── README.md
+    └── Tutorial
+        ├── code
+        │   └── ... 
+        ├── tutorial.html
+        └── tutorial.pdf
+```
+
+where `...` represents elided files/directories.
+
+The root folder `partiql-cli` contains a `README.md` file and 3 subfolders
+
+1. The folder `bin` contains startup scripts `partiql` for macOS and
+   Unix systems and `partiql.bat` for Windows systems. Execute these files
+   to start the REPL.
+1. The folder `lib` contains all the necessary Java libraries needed to run PartiQL.
+1. The folder `Tutorial` contains the tutorial in `pdf` and `html`
+   form. The subfolder `code` contains 3 types of files:
+    1. Data files with the extension `.env`. These files contains PartiQL
+       data that we can query.
+    1. PartiQL query files with the extension `.sql`. These files contain
+       the PartiQL queries used in the tutorial.
+    1. Sample query output files with the extension `.output`. These files
+       contain sample output from running the tutorial queries on the
+       appropriate data.
+
+
+
+
+## Running the PartiQL REPL
+
+### Windows
+
+Run (double click on) `partiql.bat`. This should open a command-line
+prompt and start the PartiQL REPL which displays:
+
+```shell
+Welcome to the PartiQL REPL!
+PartiQL> 
+```
+
+### macOS (Mac) and Unix
+
+1. Open a terminal and navigate to the `partiql-cli`folder.
+1. Start the REPL by typing `./bin/partiql` and pressing ENTER, which displays:
+
+The folder name will have the PartiQL version as a suffix, i.e., `partiql-cli-0.1.0`.
+
+```shell
+Welcome to the PartiQL REPL!
+PartiQL>
+```
+
+## Testing the PartiQL REPL
+
+Let's write a simple query to verify that our PartiQL REPL is working. At the `PartiQL>` prompt type:
+
+```shell
+PartiQL> SELECT * FROM [1,2,3]
+```
+
+and press `ENTER` *twice*. The output should look similar to:
+
+```partiql
+<<
+  {
+    '_1': 1
+  },
+  {
+    '_1': 2
+  },
+  {
+    '_1': 3
+  }
+>>
+```
+
+Congratulations! You successfully installed and run the PartiQL REPL.
+The PartiQL REPL is now waiting for more input.
+
+To exit the PartiQL REPL, press:
+
+* `Control+D` in macOS or Unix
+* `Control+C` on Windows
+
+or close the terminal/command prompt window.
+
+
+## Loading data from a file
+
+An easy way to load the necessary data into the REPL
+is use the `-e` switch when starting the REPL
+and provide the name of a file that contains your data.
+
+```shell
+./bin/partiql  -e Tutorial/code/q1.env
+```
+
+You can then see what is loaded in the REPL's global environment using
+the **special** REPL command `!global_env`, i.e.,
+
+```shell
+PartiQL> !global_env;
+```
+```partiql
+{
+  'hr': {
+    'employees': <<
+      {
+        'id': 3,
+        'name': 'Bob Smith',
+        'title': NULL
+      },
+      {
+        'id': 4,
+        'name': 'Susan Smith',
+        'title': 'Dev Mgr'
+      },
+      {
+        'id': 6,
+        'name': 'Jane Smith',
+        'title': 'Software Eng 2'
+      }
+    >>
+  }
+}
+```
+
 
 # Introduction 
 
 PartiQL provides SQL-compatible unified query access across multiple
 data stores containing structured, semi-structured and nested data.
-PartiQL separates the syntax and semantics of a
-query from the underlying data source and data format.
-It enables users to interact with data with[^schema] or without
+PartiQL separates the syntax and semantics of a
+query from the underlying data source and data format.
+It enables users to interact with data with or without
 regular schema.
 
-[^schema]: The implementation currently only supports data without
+The implementation currently only supports data without
 schema. Schema support is forthcoming.
 
 This tutorial aims to teach SQL users the PartiQL extensions to SQL. The
@@ -29,32 +190,40 @@ enable SQL compatibility.
 
 # PartiQL Queries are SQL compatible 
 
-PartiQL is backwards compatible with SQL-92[^SQL92-Spec]. We will see what
+PartiQL is backwards compatible with SQL-92. We will see what
 compatibility means when it is used to query data found in data formats
 and data stores.
 
-[^SQL92-Spec]:[SQL-92](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt)
+[SQL-92](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt)
 
 For starters, given the table `hr.employees`
-
+```text
   Id             name          title
   -------------- ------------- ----------------
   3              Bob Smith     null
   4              Susan Smith   Dev Mgr
   6              Jane Smith    Software Eng 2
+```
 
 
 the following SQL query 
 
-```{.sql include=tutorial/code/q1.sql}
+```partiql
+SELECT e.id, 
+       e.name AS employeeName, 
+       e.title AS title
+FROM hr.employees e
+WHERE e.title = 'Dev Mgr'
 ```
 
 is also a valid PartiQL query.  As we know from SQL, when this query
 operates on the table `hr.employees` it will return the result
 
+```text
   Id   employeeName   title
   ---- -------------- ---------
   4    Susan Smith    Dev Mgr
+```
 
 >
 > **INFO** 
@@ -67,7 +236,7 @@ operates on the table `hr.employees` it will return the result
 > For example, running 
 > 
 > ```
-> ./bin/partiql  -e Tutorial/code/tutorial-all-data.env
+> ./bin/partiql  -e .wiki/assets/code/tutorial-all-data.env
 > ```
 >  
 > will load all the data used in the tutorial in the REPL. This will
@@ -90,7 +259,17 @@ data model. PartiQL queries work on the PartiQL data set abstraction.
 For example, the table `hr.employees` is denoted in the PartiQL data
 model as this dataset
 
-```{include=tutorial/code/q1.env}
+```partiql
+{ 
+    'hr': { 
+        'employees': <<
+            -- a tuple is denoted by { ... } in the PartiQL data model
+            { 'id': 3, 'name': 'Bob Smith',   'title': null }, 
+            { 'id': 4, 'name': 'Susan Smith', 'title': 'Dev Mgr' },
+            { 'id': 6, 'name': 'Jane Smith',  'title': 'Software Eng 2'}
+        >>
+    }
+} 
 ```
 Notice that the `employees` is nested within `hr`.  
 The delimiters `<<` ... `>>` denote that the data
@@ -115,11 +294,11 @@ JSON objects
 
 ```
 
-will likely[^JSONdata] be abstracted by a PartiQL-supporting
+will likely be abstracted by a PartiQL-supporting
 implementation into the identical PartiQL abstraction with the
 `hr.employees` table.
 
-[^JSONdata]: The JSON value attached to `employee` is an *ordered*
+The JSON value attached to `employee` is an *ordered*
 list. PartiQL implementations may provide their own mappings from popular
 data formats, e.g., CSV, TSV, JSON, Ion etc., to the PartiQL data model and/or allow clients
 to implements their own mappings.
@@ -136,13 +315,26 @@ abstract into PartiQL each and every bit of the underlying data storage.
 
 Back to our query
 
-
-```{.sql include=tutorial/code/q1.sql}
+```
+SELECT e.id, 
+       e.name AS employeeName, 
+       e.title AS title
+FROM hr.employees e
+WHERE e.title = 'Dev Mgr'
 ```
 
 Instead of a SQL result set, evaluating the query in PartiQL produces:
 
-```{include=tutorial/code/q1.output} 
+```
+<<
+  {
+    'id': 4,
+    'employeeName': 'Susan Smith',
+    'title': 'Dev Mgr'
+  }
+>>
+--- 
+OK!
 ```
 
 the result remains the same, no matter whether `hr.employees` is a 
@@ -190,7 +382,34 @@ solve a large number of problems.
 
 Let's now add the nested attribute `projects` into the data set.
 
-```{include=tutorial/code/q2.env}
+```partiql
+{ 
+  'hr': { 
+      'employeesNest': <<
+         { 
+          'id': 3, 
+          'name': 'Bob Smith', 
+          'title': null, 
+          'projects': [ { 'name': 'AWS Redshift Spectrum querying' },
+                        { 'name': 'AWS Redshift security' },
+                        { 'name': 'AWS Aurora security' }
+                      ]
+          },
+          { 
+              'id': 4, 
+              'name': 'Susan Smith', 
+              'title': 'Dev Mgr', 
+              'projects': [] 
+          },
+          { 
+              'id': 6, 
+              'name': 'Jane Smith', 
+              'title': 'Software Eng 2', 
+              'projects': [ { 'name': 'AWS Redshift security' } ] 
+          }
+      >>
+    }
+}
 ```
 
 Notice that the value of `'projects'` is an array. Arrays are denoted by
@@ -205,12 +424,33 @@ the string `'security'` and outputs them along with the name of the
 `'security'` project. Notice that the query has just one extension
 over standard SQL --- the `e.projects AS p` part.
 
-```{.sql include=tutorial/code/q2.sql}
+```partiql
+SELECT e.name AS employeeName, 
+       p.name AS projectName
+FROM hr.employeesNest AS e, 
+     e.projects AS p
+WHERE p.name LIKE '%security%'
 ```
 
 The output of our query is
 
-```{include=tutorial/code/q2.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Redshift security'
+  },
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Aurora security'
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'projectName': 'AWS Redshift security'
+  }
+>>
+--- 
+OK!
 ```
 
 The extension over SQL is the `FROM` clause item `e.projects AS p`.
@@ -225,10 +465,10 @@ turn. For each employee, the variable `p` gets bound to each
 project of the employee, in turn. Thus the query's meaning, like SQL,
 is
 
-| foreach employee tuple `e` from `hr.employeesNest`
-|     foreach project tuple `p` from `e.projects`
-|         if `p.name LIKE '%security%'`
-|           output `e.name AS employeeName, p.name AS projectName`
+> foreach employee tuple `e` from `hr.employeesNest`
+>     foreach project tuple `p` from `e.projects`
+>         if `p.name LIKE '%security%'`
+>           output `e.name AS employeeName, p.name AS projectName`
 
 Notice that our query involved variables that were ranging over nested
 collections (`p` in the example), along with variables that were
@@ -300,16 +540,15 @@ example executes, in a sense, a `JOIN` between employees and projects.
 If it helps you to think in terms of `JOIN`, you may replace the comma
 with `JOIN`. That is, the following two queries are equivalent.
 
+```text
 +-----------------------------------+-----------------------------------------+
-| ```sql                            | ```sql                                  |
 | SELECT e.name AS employeeName,    | SELECT e.name AS employeeName,          |
 |        p.name AS projectName      |        p.name AS projectName            |
 | FROM hr.employeesNest AS e,       | FROM hr.employeesNest AS e CROSS JOIN   |
 |      e.projects AS p              |      e.projects AS p                    |
 | WHERE p.name LIKE '%security%'    | WHERE p.name LIKE '%security%'          |
-| ```                               | ```                                     |
 +-----------------------------------+-----------------------------------------+
-
+```
 
 ### Unnesting data with LEFT JOIN always preserves parent information
 
@@ -319,7 +558,40 @@ tuples the entire employee and project information from
 `hr.employeesNest`. The query result we want is this bag of tuples
 with attributes `id`, `employeeName`, `title` and `projectName`:
 
-```{include=tutorial/code/q3.output}
+```partiql
+<<
+  {
+    'id': 3,
+    'employeeName': 'Bob Smith',
+    'title': NULL,
+    'projectName': 'AWS Redshift Spectrum querying'
+  },
+  {
+    'id': 3,
+    'employeeName': 'Bob Smith',
+    'title': NULL,
+    'projectName': 'AWS Redshift security'
+  },
+  {
+    'id': 3,
+    'employeeName': 'Bob Smith',
+    'title': NULL,
+    'projectName': 'AWS Aurora security'
+  },
+  {
+    'id': 4,
+    'employeeName': 'Susan Smith',
+    'title': 'Dev Mgr'
+  },
+  {
+    'id': 6,
+    'employeeName': 'Jane Smith',
+    'title': 'Software Eng 2',
+    'projectName': 'AWS Redshift security'
+  }
+>>
+--- 
+OK!
 ```
 
 Notice that there is a `'Susan Smith'` tuple in the result, despite the
@@ -327,18 +599,25 @@ fact that Susan has no project. Susan's `projectName` is `null`.
 We can obtain this result by combining employees and projects using the
 `LEFT JOIN` operator, as follows:
 
-```{.sql include=tutorial/code/q3.sql}
+```partiql
+SELECT e.id AS id, 
+       e.name AS employeeName, 
+       e.title AS title, 
+       p.name AS projectName
+FROM hr.employeesNest AS e LEFT JOIN e.projects AS p ON true
 ```
 
 The semantics of this query can be thought of as
 
-| foreach employee tuple `e` from `hr.employeesNest`
-|     if the `e.projects` is an empty collection then *// this part is special about LEFT JOINs*
-|         output `e.id AS id`, `e.name AS employeeName`, `e.title AS title`
-|         and output a `null AS projectName`
-|     else *// the following part is identical to plain (inner) JOINs*
-|         foreach project tuple `p` from `e.projects`
-|             output `e.id AS id`, `e.name AS employeeName`, `e.title AS title`
+```text
+ foreach employee tuple `e` from `hr.employeesNest`
+     if the `e.projects` is an empty collection then *// this part is special about LEFT JOINs*
+         output `e.id AS id`, `e.name AS employeeName`, `e.title AS title`
+         and output a `null AS projectName`
+     else *// the following part is identical to plain (inner) JOINs*
+         foreach project tuple `p` from `e.projects`
+             output `e.id AS id`, `e.name AS employeeName`, `e.title AS title`
+```
 
 ### Use Case: Checking whether a nested collection satisfies a condition 
 
@@ -354,7 +633,7 @@ employees that are involved in a project that contains the word
 `'security'`. The solution employs SQL's "`EXISTS` (subquery)"
 feature, along with unnesting:
 
-```sql
+```partiql
 SELECT e.name AS employeeName
 FROM hr.employeesNest AS e
 WHERE EXISTS ( SELECT *
@@ -375,7 +654,6 @@ returns
 >>
 --- 
 OK!
-
 ```
 
 
@@ -384,13 +662,13 @@ employees that have more than one security project and
 we are aware of a key for employees (e.g., an attribute
 that is guaranteed to have a unique value for each employee).
 We can find the requested employees by utilizing a combination of
-`GROUP BY` and `HAVING`. [^subquerybug] In our example, let's assume that the
+`GROUP BY` and `HAVING`. In our example, let's assume that the
 `id` attribute is a primary key for the employees. Then we could find
 the employees with more than one security project with this query:
 
-[^subquerybug]: We could also have used the `>` operator with the subquery's result, but a current [issue](https://github.com/partiql/partiql-lang-kotlin/issues/81) with the implementation currently prevents us from doing so. 
+We could also have used the `>` operator with the subquery's result, but a current [issue](https://github.com/partiql/partiql-lang-kotlin/issues/81) with the implementation currently prevents us from doing so. 
 
-```sql
+```partiql
 SELECT e.name AS employeeName
 FROM hr.employeesNest e, 
      e.projects AS p
@@ -409,24 +687,43 @@ which returns
 >>
 --- 
 OK!
-
 ```
 
 ### Use Case: Subqueries that aggregate over nested collections
 
 
 Next, let's find how many querying projects (that is, projects whose
-name contains the word 'querying') each employee has.[^subquerybug]
+name contains the word 'querying') each employee has.
 
 Making the same asssumption as before, that `id` is a key for employees, we can solve 
 the problem with the query 
 
-```{.sql include=tutorial/code/q4.sql}
+```
+SELECT e.name AS employeeName, 
+       COUNT(p.name) AS queryProjectsNum
+FROM hr.employeesNest e LEFT JOIN e.projects AS p ON p.name LIKE '%querying%'
+GROUP BY e.id, e.name
 ```
 
 that returns 
 
-```{include=tutorial/code/q4.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'queryProjectsNum': 1
+  },
+  {
+    'employeeName': 'Susan Smith',
+    'queryProjectsNum': 0
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'queryProjectsNum': 0
+  }
+>>
+---
+OK!
 ```
 
 Notice this query's result includes Susan Smith and Jane Smith, who have no
@@ -439,18 +736,59 @@ A value may also be a tuple -- also called object and struct in many
 models and formats. For example, the project value in the following
 tuples is always a tuple with project name and project org.
 
-```{include=tutorial/code/q5.env}
+```
+{ 
+    'hr': { 
+        'employeesWithTuples': << 
+            { 
+                'id': 3, 
+                'name': 'Bob Smith', 
+                'title': null, 
+                'project': { 
+                    'name': 'AWS Redshift Spectrum querying', 
+                    'org': 'AWS' 
+                }
+            },
+            {
+                'id': 6, 
+                'name': 'Jane Smith', 
+                'title': 'Software Eng 2', 
+                'project': { 
+                    'name': 'AWS Redshift security', 
+                    'org': 'AWS' 
+                }
+            }
+         >>
+    }
+} 
 ```
 
 PartiQL's multistep paths enable navigating within tuples. For example,
 the following query finds AWS projects and outputs the project name and
 employee name.
 
-```{.sql include=tutorial/code/q5.sql}
 ```
+SELECT e.name AS employeeName, 
+       e.project.name AS projectName
+FROM hr.employeesWithTuples e
+WHERE e.project.org = 'AWS'
+```
+
 The result is
 
-```{include=tutorial/code/q5.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Redshift Spectrum querying'
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'projectName': 'AWS Redshift security'
+  }
+>>
+--- 
+OK!
 ```
 ## Unnesting Arbitrary Forms of Nested Collections
 
@@ -468,7 +806,35 @@ The list of projects associated with each employee in
 `hr.employeesNest` could have been simply a list of project name
 strings. Replacing the nested tuples with plain strings gives us
 
-```{include=tutorial/code/q6.env}
+```
+{ 
+    'hr': { 
+        'employeesNestScalars': <<
+            { 
+                'id': 3, 
+                'name': 'Bob Smith', 
+                'title': null, 
+                'projects': [ 
+                    'AWS Redshift Spectrum querying',
+                    'AWS Redshift security',
+                    'AWS Aurora security'
+                ]
+            },
+            { 
+                'id': 4, 
+                'name': 'Susan Smith', 
+                'title': 'Dev Mgr', 
+                'projects': []
+            },
+            { 
+                'id': 6, 
+                'name': 'Jane Smith', 
+                'title': 'Software Eng 2', 
+                'projects': [ 'AWS Redshift security' ]
+            }
+        >>
+    } 
+}
 ```
 
 Let us repeat the previous use cases on the revised employee data.
@@ -477,11 +843,32 @@ The following query finds the names of employees who work on projects
 that contain the string `'security'` and outputs them along with the name
 of the 'security' project.
 
-```{.sql include=tutorial/code/q6.sql}
+```
+SELECT e.name AS employeeName, 
+       p AS projectName
+FROM hr.employeesNestScalars AS e, 
+     e.projects AS p
+WHERE p LIKE '%security%'
 ```
 The preceding query returns 
 
-```{include=tutorial/code/q6.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Redshift security'
+  },
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Aurora security'
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'projectName': 'AWS Redshift security'
+  }
+>>
+--- 
+OK!
 ```
 
 The variable `p` ranges (again) over the content of `e.projects`. In
@@ -489,37 +876,91 @@ this case, since `e.projects` has strings (as opposed to tuples), the
 variable `p` binds each time to a project name string. Thus, this
 query can be thought of as executing the following snippet.
 
-| foreach employee tuple `e` from `hr.employeesNestScalars`
-|     foreach project `p` from `e.projects`
-|         if the string `p` matches `'%security%'`
-|           output `e.name AS employeeName` and the string `p AS projectName`
+```text
+ foreach employee tuple `e` from `hr.employeesNestScalars`
+     foreach project `p` from `e.projects`
+         if the string `p` matches `'%security%'`
+           output `e.name AS employeeName` and the string `p AS projectName`
+```
 
 ### Use Case: Unnesting Arrays of Arrays
 
 Arrays may also contain arrays, directly, without intervening tuples, as
 in the `matrices` data set.
 
-```{include=tutorial/code/q7.env}
+```
+{ 
+    'matrices': <<
+        { 
+            'id': 3, 
+            'matrix': [ 
+                [2, 4, 6],
+                [1, 3, 5, 7],
+                [9, 0]
+            ]
+        },
+        { 
+            'id': 4, 
+            'matrix': [ 
+                [5, 8],
+                [ ]
+            ]
+            
+        }
+    >>
+}
 ```
 
 The following query finds every even number and outputs the even number
 and the `id` of the tuple where it was found.
 
-```{.sql include=tutorial/code/q7.sql}
+```
+SELECT t.id AS id, 
+       x AS even
+FROM matrices AS t, 
+     t.matrix AS y,
+     y AS x
+WHERE x % 2 = 0
 ```
 
 The preceding query returns 
 
-```{include=tutorial/code/q7.output}
+```
+<<
+  {
+    'id': 3,
+    'even': 2
+  },
+  {
+    'id': 3,
+    'even': 4
+  },
+  {
+    'id': 3,
+    'even': 6
+  },
+  {
+    'id': 3,
+    'even': 0
+  },
+  {
+    'id': 4,
+    'even': 8
+  }
+>>
+--- 
+OK!
 ```
 
 Informally the query's evaluation can be thought of as 
 
-| foreach tuple `t` from `matrices`
-|     foreach array `y` from `t.matrix`
-|         foreach number `x` from `y`
-|             if `x` is even then
-|                 output `t.id AS id` and `x AS even`
+```text
+ foreach tuple `t` from `matrices`
+     foreach array `y` from `t.matrix`
+         foreach number `x` from `y`
+             if `x` is even then
+                 output `t.id AS id` and `x AS even`
+```
 
 
 # Literals
@@ -584,11 +1025,11 @@ Many formats do not require a schema that describes the data -- that is
 
 Heterogeneities are not particular to schemaless. Schemas may allow for
 heterogeneity in the types of the data. For example, one of the Hive
-data types is the union type,[^HiveUnionType] which allows a value to belong to any one of a
+data types is the union type, which allows a value to belong to any one of a
 list of types. Consider the following schema whose `projects` attribute may be
 either a string or an array of strings
 
-[^HiveUnionType]: [Hive Union Type](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-UnionTypesunionUnionTypes)
+[Hive Union Type](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-UnionTypesunionUnionTypes)
 
 ```sql
 CREATE TABLE employeesMixed(
@@ -665,7 +1106,16 @@ tuple.
 That is, we can represent the fact that Bob Smith has no title
 by simply having no `title` attribute in the `'Bob Smith'` tuple:
 
-```{include=tutorial/code/q8.env}
+```
+{ 
+    'hr': {
+        'employeesWithMissing': <<
+            { 'id': 3, 'name': 'Bob Smith' }, -- no title in this tuple
+            { 'id': 4, 'name': 'Susan Smith', 'title': 'Dev Mgr' },
+            { 'id': 6, 'name': 'Jane Smith', 'title': 'Software Eng 2'}
+        >>
+    }
+} 
 ```
 PartiQL does not argue about when to use `null`s and when to use
 "missing". Myriads of datasets already use one of the two or both.
@@ -681,7 +1131,12 @@ result missing attributes.
 Consider again this PartiQL query, which happens to also be an SQL
 query.
 
-```{.sql include=tutorial/code/q8.sql}
+```
+SELECT e.id, 
+       e.name AS employeeName, 
+       e.title AS title
+FROM hr.employeesWithMissing AS e
+WHERE e.title = 'Dev Mgr'
 ```
 
 What will happen when the query goes over the Bob Smith tuple, which has
@@ -704,7 +1159,16 @@ to `NULL` when `e` binds to `{ 'id': 3, 'name': 'Bob Smith' }`
 and, as usual in SQL, the `WHERE` clause fails when it does not
 evaluate to `true`. Thus the output will be
 
-```{include=tutorial/code/q8.output}
+```
+<<
+  {
+    'id': 4,
+    'employeeName': 'Susan Smith',
+    'title': 'Dev Mgr'
+  }
+>>
+--- 
+OK!
 ```
 
 ### Propagating MISSING in Result Tuples
@@ -712,27 +1176,72 @@ evaluate to `true`. Thus the output will be
 What would happen if a missing attribute or, more generally, an
 expression returning `MISSING` appears in the `SELECT`?
 
-```{.sql include=tutorial/code/q9.sql}
+```
+SELECT e.id, 
+       e.name AS employeeName,
+       e.title AS outputTitle
+FROM hr.employeesWithMissing AS e
 ```
 
 The query will output one tuple for each employee. When it outputs the
 Bob Smith tuple, the `e.title` will evaluate to `NULL` and then
 the output tuple will not have an `outputTitle` attribute.
 
-```{include=tutorial/code/q9.output}
+```
+<<
+  {
+    'id': 3,
+    'employeeName': 'Bob Smith'
+  },
+  {
+    'id': 4,
+    'employeeName': 'Susan Smith',
+    'outputTitle': 'Dev Mgr'
+  },
+  {
+    'id': 6,
+    'employeeName': 'Jane Smith',
+    'outputTitle': 'Software Eng 2'
+  }
+>>
+--- 
+OK!
 ```
 
 The same treatment of `MISSING` would happen if, say, we had this
 query that converts titles to capital letters:
 
-```{.sql include=tutorial/code/q10.sql}
+```
+SELECT e.id, 
+       e.name AS employeeName, 
+       UPPER(e.title) AS outputTitle
+FROM hr.employeesWithMissing AS e
 ```
 
 Again, the `e.title` will evaluate to `MISSING` for `'Bob Smith'`, the
 `UPPER(e.title)` is then `UPPER(MISSING)` and also evaluates to `NULL`.
 Thus the result will be:
 
-```{include=tutorial/code/q10.output}
+```
+<<
+  {
+    'id': 3,
+    'employeeName': 'Bob Smith',
+    'outputTitle': NULL
+  },
+  {
+    'id': 4,
+    'employeeName': 'Susan Smith',
+    'outputTitle': 'DEV MGR'
+  },
+  {
+    'id': 6,
+    'employeeName': 'Jane Smith',
+    'outputTitle': 'SOFTWARE ENG 2'
+  }
+>>
+--- 
+OK!
 ```
 
 ## Variables can range over Data with Different Types
@@ -754,13 +1263,45 @@ the following twist in the `employeesNest` data set. Some of the
 elements of the `projects` array are plain strings and some are
 tuples. Even the employee tuples do not always have the same attributes.
 
-```{include=tutorial/code/q11.env}
+```
+{ 
+    'hr': { 
+        'employeesMixed2': <<
+            { 
+                'id': 3, 
+                'name': 'Bob Smith', 
+                'title': null, 
+                'projects': [ 
+                    { 'name': 'AWS Redshift Spectrum querying' },
+                    'AWS Redshift security',
+                    { 'name': 'AWS Aurora security' }
+                ]
+            },
+            { 
+                'id': 4, 
+                'name': 'Susan Smith', 
+                'title': 'Dev Mgr', 
+                'projects': []
+            },
+            { 
+                'id': 6, 
+                'name': 'Jane Smith', 
+                'projects': [ 'AWS Redshift security'] 
+            }
+        >>
+    }
+}
 ```
 
 This query on `hr.employeesMixed2` produces employee name -- employee
 project pairs.
 
-```{.sql include=tutorial/code/q11.sql}
+```
+SELECT e.name AS employeeName,
+       CASE WHEN (p IS TUPLE) THEN p.name 
+       ELSE p END AS projectName
+FROM hr.employeesMixed2 AS e,
+     e.projects AS p
 ```
 
 Notice the sub-expression `(p IS TUPLE)`. The `IS` operator can be used
@@ -775,10 +1316,11 @@ expressions.
 This table shows each variables' binding produced by the `FROM` clause
 and the corresponding tuple output by the `SELECT` clause.
 
+```text
+
 +-----------------------+-----------------------+-----------------------+
 | Variable `e`          | Variable `p`          | Result tuple          |
 +=======================+=======================+=======================+
-| ```                   | ```                   | ```
 | { 'id': 3,            | { 'name': 'AWS        | {                     |
 |                       | Redshift Spectrum     |                       |
 | 'name': 'Bob Smith',  | querying' }           | 'employeeName': 'Bob  |
@@ -798,9 +1340,7 @@ and the corresponding tuple output by the `SELECT` clause.
 |  ]                    |                       |                       |
 |                       |                       |                       |
 | }                     |                       |                       |
-| ```                   | ```                   | ```                   | 
 +-----------------------+-----------------------+-----------------------+
-| ```                   | ```                   | ```                   | 
 | { 'id': 3,            | 'AWS Redshift         | {                     |
 |                       | security'             |                       |
 | 'name': 'Bob Smith',  |                       | 'employeeName': 'Bob  |
@@ -820,9 +1360,7 @@ and the corresponding tuple output by the `SELECT` clause.
 |  ]                    |                       |                       |
 |                       |                       |                       |
 | }                     |                       |                       |
-| ```                   | ```                   | ```                   | 
 +-----------------------+-----------------------+-----------------------+
-| ```                   | ```                   | ```                   | 
 | { 'id': 3,            | { 'name': 'AWS Aurora | {                     |
 |                       | security' }           |                       |
 | 'name': 'Bob Smith',  |                       | 'employeeName': 'Bob  |
@@ -842,9 +1380,7 @@ and the corresponding tuple output by the `SELECT` clause.
 | \]                    |                       |                       |
 |                       |                       |                       |
 | }                     |                       |                       |
-| ```                   | ```                   | ```                   | 
 +-----------------------+-----------------------+-----------------------+
-| ```                   | ```                   | ```                   | 
 | { 'id': 6,            |   'AWS Redshift       | {                     |
 |                       | security'             |                       |
 | 'name': 'Jane Smith', |                       |   'employeeName':     |
@@ -854,8 +1390,8 @@ and the corresponding tuple output by the `SELECT` clause.
 |                       |                       | Redshift security'    |
 | }                     |                       |                       |
 |                       |                       | }                     |
-|```                    | ```                   | ``` 
 +-----------------------+-----------------------+-----------------------+
+```
 
 # Accessing Array Elements by Order
 
@@ -872,18 +1408,63 @@ elements in their arrays.
 
 Let's consider again the dataset `hr.employeesNest`.
 
-```{include=tutorial/code/q12.env}
+```
+{ 
+  'hr': { 
+      'employeesNest': <<
+         { 
+          'id': 3, 
+          'name': 'Bob Smith', 
+          'title': null, 
+          'projects': [ { 'name': 'AWS Redshift Spectrum querying' },
+                        { 'name': 'AWS Redshift security' },
+                        { 'name': 'AWS Aurora security' }
+                      ]
+          },
+          { 
+              'id': 4, 
+              'name': 'Susan Smith', 
+              'title': 'Dev Mgr', 
+              'projects': [] 
+          },
+          { 
+              'id': 6, 
+              'name': 'Jane Smith', 
+              'title': 'Software Eng 2', 
+              'projects': [ { 'name': 'AWS Redshift security' } ] 
+          }
+      >>
+    }
+}
 ```
 
 The `projects` attribute is an array of tuples; that is, each tuple
 has an ordinal associated with it. The following query returns each
 employee name, along with the first project of the employee.
 
-```{.sql include=tutorial/code/q12.sql}
+```
+SELECT e.name AS employeeName, 
+       e.projects[0].name AS firstProjectName
+FROM hr.employeesNest AS e
 ```
 The query returns 
 
-```{include=tutorial/code/q12.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'firstProjectName': 'AWS Redshift Spectrum querying'
+  },
+  {
+    'employeeName': 'Susan Smith'
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'firstProjectName': 'AWS Redshift security'
+  }
+>>
+--- 
+OK!
 ```
 
 ## Multistep Paths
@@ -914,14 +1495,39 @@ The following query finds the names of each employee
 involved in a security project, the security project, and, its index in
 the `projects` array.
 
-```{.sql include=tutorial/code/q13.sql}
+```
+SELECT e.name AS employeeName, 
+       p.name AS projectName, 
+       o AS projectPriority
+FROM hr.employeesNest AS e, 
+     e.projects AS p AT o
+WHERE p.name LIKE '%security%'
 ```
 
 Notice the new feature: `AT o`. While `p` ranges over the elements
 of the array `e.projects`, the variable `o` is assigned to the index of
 the element in the array. The query returns: 
 
-```{include=tutorial/code/q13.output}
+```
+<<
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Redshift security',
+    'projectPriority': 1
+  },
+  {
+    'employeeName': 'Bob Smith',
+    'projectName': 'AWS Aurora security',
+    'projectPriority': 2
+  },
+  {
+    'employeeName': 'Jane Smith',
+    'projectName': 'AWS Redshift security',
+    'projectPriority': 0
+  }
+>>
+--- 
+OK!
 ```
 
 # Pivoting & Unpivoting
@@ -934,12 +1540,24 @@ pairs of tuples or the key/value pairs of maps.
 Consider this dataset that provides the closing prices of multiple
 ticker symbols.
 
-```{include=tutorial/code/q14.env}
+```
+{ 
+    'closingPrices': <<
+        { 'date': '4/1/2019', 'amzn': 1900, 'goog': 1120, 'fb': 180 },
+        { 'date': '4/2/2019', 'amzn': 1902, 'goog': 1119, 'fb': 183 }
+    >>
+} 
 ```
 
 The following query unpivots the stock ticker/price pairs.
 
-```{.sql include=tutorial/code/q14.sql}
+```
+SELECT c."date" AS "date", 
+       sym AS "symbol", 
+       price AS price
+FROM closingPrices AS c, 
+     UNPIVOT c AS price AT sym
+WHERE NOT sym = 'date'
 ```
 Notice the use of `"` in this query. The double quotes allow us to
 disambiguate from `date` the keyword and `"date"` the identifier. 
@@ -948,14 +1566,48 @@ Double quotes can also specify case sensitivity for attribute lookups.
 
 The query returns 
 
-```{include=tutorial/code/q14.output}
+```
+<<
+  {
+    'date': '4/1/2019',
+    'symbol': 'amzn',
+    'price': 1900
+  },
+  {
+    'date': '4/1/2019',
+    'symbol': 'goog',
+    'price': 1120
+  },
+  {
+    'date': '4/1/2019',
+    'symbol': 'fb',
+    'price': 180
+  },
+  {
+    'date': '4/2/2019',
+    'symbol': 'amzn',
+    'price': 1902
+  },
+  {
+    'date': '4/2/2019',
+    'symbol': 'goog',
+    'price': 1119
+  },
+  {
+    'date': '4/2/2019',
+    'symbol': 'fb',
+    'price': 183
+  }
+>>
+--- 
+OK!
 ```
 
 Unpivoting tuples enables the use of attribute names as if they were
 data. For example, it becomes easy to compute the average price for each
 symbol as
 
-```sql
+```partiql
 SELECT sym AS "symbol", 
        AVG(price) AS avgPrice
 FROM closingPrices c, 
@@ -990,17 +1642,33 @@ OK!
 Pivoting turns a collection into a tuple. For example, consider the
 collection
 
-```{include=tutorial/code/q15.env}
+```
+{ 
+    'todaysStockPrices': <<
+        { 'symbol': 'amzn', 'price': 1900},
+        { 'symbol': 'goog', 'price': 1120},
+        { 'symbol': 'fb', 'price': 180 }
+    >>
+} 
 ```
 
 Then the following `PIVOT` query 
 
-```{.sql include=tutorial/code/q15.sql}
+```
+PIVOT sp.price AT sp."symbol"
+FROM todaysStockPrices sp
 ```
 
 produces the tuple
 
-```{include=tutorial/code/q15.output}
+```
+{
+  'amzn': 1900,
+  'goog': 1120,
+  'fb': 180
+}
+--- 
+OK!
 ```
 
 Notice that the `PIVOT` query looks like a `SELECT-FROM-WHERE-...`
@@ -1017,19 +1685,43 @@ Nested Results with `GROUP BY` ... `GROUP AS`](#creating-nested-results-with-gro
 Let us generalize the previous case of pivoting. We have a table of
 stock prices
 
-```{include=tutorial/code/q16.env}
+```
+{ 
+    'stockPrices':<<
+        { 'date': '4/1/2019', 'symbol': 'amzn', 'price': 1900},
+        { 'date': '4/1/2019', 'symbol': 'goog', 'price': 1120},
+        { 'date': '4/1/2019', 'symbol': 'fb',   'price': 180 },
+        { 'date': '4/2/2019', 'symbol': 'amzn', 'price': 1902},
+        { 'date': '4/2/2019', 'symbol': 'goog', 'price': 1119},
+        { 'date': '4/2/2019', 'symbol': 'fb',   'price': 183 }
+    >>
+} 
 ```
 
 and we want to pivot it into a collection of tuples, where each tuple
 has all the `symbol:price` pairs for a date, as follows
 
-```{include=tutorial/code/q16.output}
+```
+<<
+{ 
+    'date': date(4/1/2019), 
+    'prices': {'amzn': 1900, 'goog': 1120, 'fb': 180} 
+},
+{ 
+    'date': date(4/2/2019), 
+    'prices': {'amzn': 1902, 'goog': 1119, 'fb': 183} 
+}
+>>
 ```
 
 The following query first creates one group datesPrices for each date.
 Then the `PIVOT` subquery pivots the group into the tuple prices.
 
-```{.sql include=tutorial/code/q16.sql}
+```
+SELECT sp."date" AS "date", 
+       (PIVOT dp.sp.price AT dp.sp."symbol" 
+        FROM datesPrices as dp ) AS prices
+FROM StockPrices AS sp GROUP BY sp."date" GROUP AS datesPrices
 ```
 
 For example, the `datesPrices` collection, returned from `GROUP AS` for
@@ -1070,7 +1762,35 @@ that create heterogeneous results.
 
 Let's consider again the dataset `hr.employeesNestScalars`:
 
-```{include=tutorial/code/q17.env}
+```
+{ 
+    'hr': { 
+        'employeesNestScalars': <<
+            { 
+                'id': 3, 
+                'name': 'Bob Smith', 
+                'title': null, 
+                'projects': [ 
+                    'AWS Redshift Spectrum querying',
+                    'AWS Redshift security',
+                    'AWS Aurora security'
+                ]
+            },
+            { 
+                'id': 4, 
+                'name': 'Susan Smith', 
+                'title': 'Dev Mgr', 
+                'projects': []
+            },
+            { 
+                'id': 6, 
+                'name': 'Jane Smith', 
+                'title': 'Software Eng 2', 
+                'projects': [ 'AWS Redshift security' ]
+            }
+        >>
+    } 
+}
 ```
 
 The following query outputs each tuple of `hr.employeesNestScalars`,
@@ -1078,12 +1798,47 @@ except that instead of all projects each tuple has only the security
 projects of the employee. The important new feature here is the
 `SELECT VALUE <expression>`.
 
-```{.sql include=tutorial/code/q17.sql}
+```
+SELECT e.id AS id, 
+       e.name AS name, 
+       e.title AS title,
+       ( SELECT VALUE p
+         FROM e.projects AS p
+         WHERE p LIKE '%security%'
+       ) AS securityProjects
+FROM hr.employeesNestScalars AS e
 ```
 
 The result is
 
-```{include=tutorial/code/q17.output}
+```
+<<
+  {
+    'id': 3,
+    'name': 'Bob Smith',
+    'title': NULL,
+    'securityProjects': <<
+      'AWS Redshift security',
+      'AWS Aurora security'
+    >>
+  },
+  {
+    'id': 4,
+    'name': 'Susan Smith',
+    'title': 'Dev Mgr',
+    'securityProjects': <<>>
+  },
+  {
+    'id': 6,
+    'name': 'Jane Smith',
+    'title': 'Software Eng 2',
+    'securityProjects': <<
+      'AWS Redshift security'
+    >>
+  }
+>>
+--- 
+OK!
 ```
 
 A `SELECT VALUE <expression>` query (or subquery, as in this
@@ -1112,12 +1867,34 @@ The following query outputs each security project found in
 `hr.employeesNestScalars` along with the list of employee names that
 work on the project.
 
-```{.sql include=tutorial/code/q18.sql}
+```
+SELECT p AS projectName,
+       ( SELECT VALUE v.e.name 
+         FROM perProjectGroup AS v ) AS employees
+FROM hr.employeesNestScalars AS e JOIN e.projects AS p ON p LIKE '%security%'
+GROUP BY p GROUP AS perProjectGroup
 ```
 
 The result is
 
-```{include=tutorial/code/q18.output}
+```
+<<
+  {
+    'projectName': 'AWS Aurora security',
+    'employees': <<
+      'Bob Smith'
+    >>
+  },
+  {
+    'projectName': 'AWS Redshift security',
+    'employees': <<
+      'Bob Smith',
+      'Jane Smith'
+    >>
+  }
+>>
+--- 
+OK!
 ```
 
 The `GROUP AS` generalizes SQL's `GROUP BY` by making the formulated
@@ -1146,10 +1923,11 @@ We see that the `FROM` delivers the collection of tuples consisting of
 an employee `e` and a project `p` that were output by the `FROM`
 clause, i.e., the `LEFT JOIN`. This is like SQL's `FROM` semantics.
 
+```text
+
 +-----------------------------------+-----------------------------------+
 | Variable `e`                      | Variable `p`                      |
 +===================================+===================================+
-|```                                | ```                               | 
 | { 'id': 3,                        |   'AWS Redshift security'         |
 | 'name': 'Bob Smith',              |                                   |
 | 'title': null,                    |                                   |
@@ -1159,9 +1937,7 @@ clause, i.e., the `LEFT JOIN`. This is like SQL's `FROM` semantics.
 | 'AWS Aurora security'             |                                   |
 |  ]                                |                                   |
 | }                                 |                                   |
-| ```                               | ```                               | 
 +-----------------------------------+-----------------------------------+
-| ```                               | ```                               | 
 | { 'id': 3,                        |   'AWS Aurora security'           |
 | 'name': 'Bob Smith',              |                                   |
 | 'title': null,                    |                                   |
@@ -1171,17 +1947,15 @@ clause, i.e., the `LEFT JOIN`. This is like SQL's `FROM` semantics.
 | 'AWS Aurora security'             |                                   |
 |  ]                                |                                   |
 | }                                 |                                   |
-| ```                               | ```                               | 
 +-----------------------------------+-----------------------------------+
-| ```                               | ```                               | 
 | { 'id': 6,                        | 'AWS Redshift security'           |
 | 'name': 'Jane Smith',             |                                   |
 | 'title': 'Software Eng 2',        |                                   |
 | 'projects':  [ 'AWS Redshift      |                                   |
 | security'  ]                      |                                   |
 | }                                 |                                   |
-| ```                               | ```                               | 
 +-----------------------------------+-----------------------------------+
+```
 
 Then the `GROUP BY ... GROUP AS ...` can be thought of as outputting a
 table that has one column for each group-by expression (i.e., each
@@ -1190,10 +1964,10 @@ value (conceptually) is the collection of employee/project `e`/`p`
 tuples that correspond to the group-by expression `p`. Thus the
 `GROUP BY ... GROUP AS ...` output is the table
 
+```text
 +-----------------------------------+-----------------------------------+
 | `p`                               | `perProjectGroup`                 |
 +===================================+===================================+
-| ```                               | ```                               | 
 | 'AWS Redshift security'           | <<                              |
 |                                   | { e: { 'id': 3, 'name': 'Bob      |
 |                                   | Smith', ... }, p: 'AWS Redshift   |
@@ -1203,16 +1977,14 @@ tuples that correspond to the group-by expression `p`. Thus the
 |                                   | Smith', ... }, p: 'AWS Redshift   |
 |                                   | security' }                       |
 |                                   | >>                              |
-| ```                               | ```                               | 
 +-----------------------------------+-----------------------------------+
-| ```                               | ```                               | 
 | 'AWS Aurora security'             | <<                              |
 |                                   | { e: { 'id': 3, 'name': 'Bob      |
 |                                   | Smith', ...}, p: 'AWS Aurora      |
 |                                   | security' },                      |
 |                                   | >>                              |
-| ```                               | ```                               | 
 +-----------------------------------+-----------------------------------+
+```
 
 Finally the `SELECT` clause inputs the above and outputs the query
 result.

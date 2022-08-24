@@ -1,4 +1,4 @@
-# `partiql-lang-kotlin` compared to the PartiQL Specification
+# PartiQL Kotlin vs PartiQL Specification
 
 This document outlines the ways in which the `partiql-lang-kotlin` reference implementation conforms and diverges from
 the [PartiQL specification](https://partiql.org/assets/PartiQL-Specification.pdf).
