@@ -1,6 +1,5 @@
 * General
   * [Home](https://github.com/johnedquinn/wiki-test/wiki/Home)
-  * [Code Style](https://github.com/johnedquinn/wiki-test/wiki/CODE-STYLE)
 * Tutorials
   * [General Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Tutorial)
   * [Command Line Tutorial](https://github.com/johnedquinn/wiki-test/wiki/Command-Line-Tutorial)
@@ -9,11 +8,13 @@
   * [Abstract Syntax Tree](https://github.com/johnedquinn/wiki-test/wiki/Abstract-Syntax-Tree)
   * [Architecture Design](https://github.com/johnedquinn/wiki-test/wiki/Architecture-Design)
   * [Rewriter to Visitor Transform Guide](https://github.com/johnedquinn/wiki-test/wiki/Rewriter-to-Visitor-Transform-Guide)
+  * [Code Style Guidelines](https://github.com/johnedquinn/wiki-test/wiki/CODE-STYLE)
 * Documentation
   * [Exceptions](https://github.com/johnedquinn/wiki-test/wiki/Exceptions)
   * [Functions](https://github.com/johnedquinn/wiki-test/wiki/Functions)
   * [Implementation & Specification Comparison](https://github.com/johnedquinn/wiki-test/wiki/Implementation-&-Specification-Comparison)
   * [Test Script Specification](https://github.com/johnedquinn/wiki-test/wiki/Test-Script-Specification)
+  * [Further Reading](https://github.com/johnedquinn/wiki-test/wiki/Further-Reading)
 * Migration Guides
   * [Migration Guide General](https://github.com/johnedquinn/wiki-test/wiki/migration-guide.md)
   * [CLI Versions](https://github.com/johnedquinn/wiki-test/wiki/cli-versions.md)

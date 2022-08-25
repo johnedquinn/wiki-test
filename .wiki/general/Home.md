@@ -1,14 +1,10 @@
 # Overview
 
-PartiQL is an implementation of [SQL++](http://db.ucsd.edu/wp-content/uploads/pdfs/375.pdf) based upon
-[Ion's](http://amzn.github.io/ion-docs/) type system. PartiQL is based on SQL92 and provides support for working 
-with schemaless hierarchical data. 
+This project is an implementation of the [PartiQL Specification](https://partiql.org/assets/PartiQL-Specification.pdf).
+PartiQL is based on SQL-92 and has added support for working with schemaless hierarchical data. PartiQL’s extensions to
+SQL are easy to understand, treat nested data as first class citizens and compose seamlessly with each other and SQL.
 
-## Further Reading 
-
- * [SQL++](http://db.ucsd.edu/wp-content/uploads/pdfs/375.pdf)
- * [Ion's](http://amzn.github.io/ion-docs/) 
-
+You can find more information on [our website](https://partiql.org).
 
 # Contributing
 
