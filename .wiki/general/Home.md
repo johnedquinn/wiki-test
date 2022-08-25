@@ -30,7 +30,7 @@ like these are incredibly useful:
 
 ## Contributing to this Wiki
 
-This wiki is stored within the main project's repository under the `.wiki/` directory. From there, all contents of the directory are synced (via a GitHub workflow) with this wiki.
+This wiki's source can be found within the main project's repository under the `.wiki/` directory. From there, all contents of the directory are synced (via a GitHub workflow) with this wiki.
 
 To contribute to this wiki, there are some rules to follow:
 
