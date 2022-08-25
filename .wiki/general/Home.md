@@ -41,5 +41,5 @@ To contribute to this wiki, there are some items to remember:
 
 # License
 
-This project is licensed under the Apache-2.0 License. Please see our 
+This project is licensed under the Apache-2.0 License. Please see our official 
 [LICENSE](https://github.com/partiql/partiql-lang-kotlin/blob/main/LICENSE) here.
