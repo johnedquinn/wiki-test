@@ -18,4 +18,4 @@ jobs:
         WIKI_DIR: .wiki/
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_NAME: ${{ github.event.commits[0].author }}
-        GH_MAIL: '${{ github.event.commits[0].author.email }}
+        GH_MAIL: ${{ github.event.commits[0].author.email }}
