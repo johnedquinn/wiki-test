@@ -1,9 +1,9 @@
-name: Deploy Wiki
+name: Deploy Docs to GitHub Wiki
 
 on:
   push:
     paths:
-      - '.wiki/**'
+      - 'docs/**'
     branches:
       - main
 
