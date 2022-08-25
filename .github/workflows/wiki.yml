@@ -17,5 +17,5 @@ jobs:
       env:
         WIKI_DIR: .wiki/
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_MAIL: '41898282+github-actions[bot]@users.noreply.github.com'
-        GH_NAME: 'github-actions[bot]'
+        GH_MAIL: "${GITHUB_ACTOR}@users.noreply.github.com"
+        GH_NAME: "${GITHUB_ACTOR}"
